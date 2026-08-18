@@ -54,7 +54,8 @@ export default function CoursePlayer({ params }: { params: Promise<{ id: string 
           return router.push('/portal');
         }
 
-        const courseData = { id: courseSnap.id, ...courseSnap.data() };
+        // CRITICAL FIX: Added "as any" to satisfy TypeScript's strict type checking
+        const courseData = { id: courseSnap.id, ...courseSnap.data() } as any;
 
         // 4. Double check: Are they allowed to view this specific course?
         if (studentData.accessType !== 'Full Platform Bundle' && !studentData.specificCourses?.includes(courseData.name)) {
