@@ -1,4 +1,4 @@
-import LiveCourseCard from '../components/courses/LiveCourseCard';
+import LiveCourseCard from '@/components/courses/LiveCourseCard';
 
 export default function CourseCatalog() {
   // Dummy data simulating your upcoming live batches
