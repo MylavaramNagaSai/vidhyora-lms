@@ -28,7 +28,7 @@ const LockIconSm = () => (
 export default function StudentPortal() {
   const router = useRouter();
   
-  // NEW: We now track both assigned AND unassigned (available) courses
+  // We now track both assigned AND unassigned (available) courses
   const [assignedCourses, setAssignedCourses] = useState<any[]>([]);
   const [availableCourses, setAvailableCourses] = useState<any[]>([]);
   
@@ -80,10 +80,11 @@ export default function StudentPortal() {
         const vaultsSnap = await getDocs(vaultsQuery);
 
         const myAuthorizedCourses: any[] = [];
-        const myLockedCourses: any[] = []; // NEW: Array for locked courses
+        const myLockedCourses: any[] = []; // Array for locked courses
 
         vaultsSnap.forEach(doc => {
-          const course = { id: doc.id, ...doc.data() };
+          // CRITICAL FIX: Added 'as any' to prevent the TypeScript error!
+          const course = { id: doc.id, ...doc.data() } as any;
           
           // Logic: If bundle OR name is included, it's authorized. Else, it's locked.
           if (accessType === 'Full Platform Bundle' || allowedCourses.includes(course.name)) {
@@ -94,7 +95,7 @@ export default function StudentPortal() {
         });
 
         setAssignedCourses(myAuthorizedCourses);
-        setAvailableCourses(myLockedCourses); // NEW: Save locked courses to state
+        setAvailableCourses(myLockedCourses); // Save locked courses to state
 
       } catch (error) {
         console.error("Auth or Data Fetch Error:", error);
